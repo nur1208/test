@@ -21,11 +21,17 @@ public:
 	void operator=(double n){  this->setX(n)  ; this->setY(n); };
 	
 	friend ostream& operator<< (ostream&, Point&);
+	friend istream& operator>> (istream&, Point&);
 };
 
 ostream& operator << (ostream& output, Point& p){
 	output << p.x << " " << p.y;
 	return output;
+}
+
+istream& operator>> (istream& input, Point& p){
+	input >> p.x >> p.y;
+	return input;
 }
 
 class Shape {
@@ -79,14 +85,47 @@ string toString(int num){
 	return stringNum;
 }
 
+// Circle& createCircle(){
+// 	string stringNum = toString(10);
+// 	Point p(1, 2);
+// 	Circle c(p, 5, toString(10));
+// 	return c;
+// }
+
 int main()
 {
+
+	int choose;
 	cout << "Demo inheritence of class, virtual class, virtual function \n shape, point, circle, ellipse,retangle, square \n 0.exit the program \n 1.create a circle \n 2.create a ellipse \n 3.create a square \n 4.create a rectangle \n 5.List geometry objects \n";
-	while()
+	cout << "Enter your choice : ";
+	cin >> choose;
+	Shape** base = new Shape*[20];
+	int index = 0;
+	while(choose != 0){
+
+		if(choose == 1){
+			// string stringNum = toString(10);
+			Point p;
+			double r;
+			cout << "Input xc,yc,r of circle: ";
+			cin >> p >> r;
+			base[index] = new Circle(p, r, toString(index+1));
+			
+			display(base[index]);
+			
+			
+		}
+		cout << "Demo inheritence of class, virtual class, virtual function \n shape, point, circle, ellipse,retangle, square \n 0.exit the program \n 1.create a circle \n 2.create a ellipse \n 3.create a square \n 4.create a rectangle \n 5.List geometry objects \n";
+		cout << "Enter your choice : ";
+		cin >> choose;
+
+	}
+	
 	
 
 
 	
+
 	
 	/*string stringNum = toString(10);
 	Point p(1, 2);
