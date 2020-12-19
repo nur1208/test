@@ -48,6 +48,7 @@ public:
 	string getName() { return name; };
 	
  	virtual void show() = 0;
+	// friend  istream& operator>> (istream&, Ellipse&); can not be declared virtual
 };
 
 class Circle : public Shape {
@@ -65,13 +66,110 @@ public:
 };
 
 void Circle::show() {
-	cout << "id = " << this->getId() << " name = " << this->getName() << " xc = "  << this->p.getX()<< " xy = "  << this->p.getY() <<  " r = " <<  this->r << endl;
+	cout << "id = " << this->getId() << " name = " << this->getName() << " xc = "  << this->p.getX()<< " yc = "  << this->p.getY() <<  " r = " <<  this->r << endl;
 }
 
 ostream& operator << (ostream& output, Circle& c){
 	output <<  "xc = " << c.p.getX()<< " xy = "  << c.p.getY() <<  " r = " <<  c.r;
 	return output;
 }
+
+class Ellipse : public Shape {
+private:
+	Point p;
+	double r1, r2;
+public:
+	Ellipse(Point newP = 0, double newR1 =0, double newR2 =0, string newId= "") :Shape( newId,  "ellipse"+newId), p(newP), r1(newR1), r2(newR2) {
+	};
+	
+	Point  getP() const {return p;}
+	void show() ;
+	
+	
+	friend ostream& operator<< (ostream&, Ellipse&);	
+	friend istream& operator>> (istream&, Ellipse&);
+
+};
+
+void Ellipse::show() {
+	cout << "id = " << this->getId() << " name = " << this->getName() << " xe = "  << this->p.getX()<< " ye = "  << this->p.getY() <<  " r1 = " <<  this->r1 <<  " r2 = " <<  this->r2 << endl;
+}
+
+istream& operator>> (istream& input, Ellipse& e){
+	input >> e.p >> e.r1  >> e.r2;
+	return input;
+}
+
+ostream& operator << (ostream& output, Ellipse& c){
+	output <<  "xc = " << c.p.getX()<< " xc = "  << c.p.getY() <<  " r1 = " <<  c.r1 <<  " r1 = " <<  c.r1;
+	return output;
+}
+
+class Square : public Shape {
+private:
+	Point p;
+	double l;
+public:
+	Square(Point newP = 0, double newL =0 , string newId= "") :Shape( newId,  "square"+newId), p(newP), l(newL) {
+	};
+	
+	double getL() const {return l;}
+	Point  getP() const {return p;}
+	void show() ;
+	
+	
+	friend ostream& operator<< (ostream&, Square&);	
+	friend istream& operator>> (istream&, Square&);
+
+};
+
+void Square::show() {
+	cout << "id = " << this->getId() << " name = " << this->getName() << " xs = "  << this->p.getX()<< " ys = "  << this->p.getY() << "  length = " << this->getL() << endl;
+}
+
+istream& operator>> (istream& input, Square& e){
+	input >> e.p >> e.l;
+	return input;
+}
+
+ostream& operator << (ostream& output, Square& c){
+	output <<  "xc = " << c.p.getX()<< " xc = "  << c.p.getY() << "length = "  << c.getL();
+	return output;
+}
+
+class Retangle : public Shape {
+private:
+	Point p;
+	double l, w;
+public:
+	Retangle(Point newP = 0, double newL =0 , double newW =0 , string newId= "") :Shape( newId,  "retangle"+newId), p(newP), l(newL), w(newW) {
+	};
+	
+	double getL() const {return l;}
+	double getW() const {return w;}
+	Point  getP() const {return p;}
+	void show() ;
+	
+	
+	friend ostream& operator<< (ostream&, Retangle&);	
+	friend istream& operator>> (istream&, Retangle&);
+
+};
+
+void Retangle::show() {
+	cout << "id = " << this->getId() << " name = " << this->getName() << " xs = "  << this->p.getX()<< " ys = "  << this->p.getY() << "  length = " << this->getL() << "  width = " << this->getW() << endl;
+}
+
+istream& operator>> (istream& input, Retangle& e){
+	input >> e.p >> e.l;
+	return input;
+}
+
+ostream& operator << (ostream& output, Retangle& c){
+	output <<  "xc = " << c.p.getX()<< " xc = "  << c.p.getY() << "length = "  << c.getL();
+	return output;
+}
+
 
 void display(Shape *s){
 	s->show();
@@ -96,7 +194,7 @@ int main()
 {
 
 	int choose;
-	cout << "Demo inheritence of class, virtual class, virtual function \n shape, point, circle, ellipse,retangle, square \n 0.exit the program \n 1.create a circle \n 2.create a ellipse \n 3.create a square \n 4.create a rectangle \n 5.List geometry objects \n";
+	cout << "Demo inheritance of class, virtual class, virtual function \n shape, point, circle, ellipse,retangle, square \n 0.exit the program \n 1.create a circle \n 2.create a ellipse \n 3.create a square \n 4.create a rectangle \n 5.List geometry objects \n";
 	cout << "Enter your choice : ";
 	cin >> choose;
 	Shape** base = new Shape*[20];
@@ -110,12 +208,52 @@ int main()
 			cout << "Input xc,yc,r of circle: ";
 			cin >> p >> r;
 			base[index] = new Circle(p, r, toString(index+1));
-			
 			display(base[index]);
+			index++;
 			
 			
 		}
-		cout << "Demo inheritence of class, virtual class, virtual function \n shape, point, circle, ellipse,retangle, square \n 0.exit the program \n 1.create a circle \n 2.create a ellipse \n 3.create a square \n 4.create a rectangle \n 5.List geometry objects \n";
+		else if(choose == 2){
+			Point p;
+			double r1, r2;
+
+			cout << "Input xe,ye,r1,r2 of ellipse: ";
+			cin >> p >> r1>> r2;
+
+			base[index] = new Ellipse(p, r1,r2, toString(index + 1));
+			display(base[index]);
+			index++;
+		}
+		else if(choose == 3){
+			Point p;
+			double l;
+
+			cout << "Input xe,ye,l of square : ";
+			cin >> p >> l ;
+
+			base[index] = new Square(p, l , toString(index+  1));
+			display(base[index]);
+			index++;
+		}
+		else if(choose == 4){
+			Point p;
+			double l, w;
+
+			cout << "Input xc,yc, length and width of rectangle: ";
+			cin >> p >> l >> w ;
+
+			base[index] = new Retangle(p, l, w , toString(index+  1));
+			display(base[index]);
+			index++;
+		}
+		else if(choose == 5){
+			for (int  i = 0; i < index; i++)
+			{
+				display(base[i]);
+			}
+			
+		}
+		cout << "Demo inheritance of class, virtual class, virtual function \n shape, point, circle, ellipse,retangle, square \n 0.exit the program \n 1.create a circle \n 2.create a ellipse \n 3.create a square \n 4.create a rectangle \n 5.List geometry objects \n";
 		cout << "Enter your choice : ";
 		cin >> choose;
 
